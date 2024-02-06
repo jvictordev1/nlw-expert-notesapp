@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/readme/logo.png"/>
+  <img src="https://github.com/jvictordev1/nlw-expert-notesapp/blob/main/public/logo.png"/>
 </p>
 
 <p align="center">
