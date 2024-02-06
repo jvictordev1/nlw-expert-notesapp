@@ -25,7 +25,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 Siga o passo a passo descrito abaixo:
 
 ```bash
-  git clone https://github.com/Cauatn/scasys.git
+  git clone https://github.com/jvictordev1/nlw-expert-notesapp.git
   cd my-project
   npm install
   npm run dev
