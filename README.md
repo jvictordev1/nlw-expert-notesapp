@@ -1,22 +1,14 @@
-<img src="/readme/logo.png" align="center"/>
-
 <p align="center">
-Projeto realizado durante aulas da trilha react no primeiro NLW Expert da Rocketseat de 2024. <br/>
+  <img src="/readme/logo.png"/>
 </p>
 
 <p align="center">
-  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-licença">Licença</a>
+Aplicativo de NoteTaking interativo e de fácil utilização que possibilita o registro de informações através de texto ou reconhecimento de voz desenvolvido durante aulas da trilha react no primeiro NLW Expert da Rocketseat de 2024. <br/>
 </p>
-
-<p align="center">
-  <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=49AA26&labelColor=000000">
-</p>
-
-<br>
 
 ---
-## Tecnologias
+
+## Tecnologias utilizadas
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
@@ -27,3 +19,14 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - Vite
 
 ---
+
+## Instalando localmente
+
+Siga o passo a passo descrito abaixo:
+
+```bash
+  git clone https://github.com/Cauatn/scasys.git
+  cd my-project
+  npm install
+  npm run dev
+```
