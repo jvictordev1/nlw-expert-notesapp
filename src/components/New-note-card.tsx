@@ -1,4 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { AnimatePresence, motion } from "framer-motion";
 import { Circle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,7 +19,7 @@ export function NewNoteCard() {
   const handleModalClose = () => {
     shouldShowTextArea === false ? setShouldShowTextArea(true) : "";
   };
-  const handleNoteCreation = (e: React.FormEvent) => {
+  const handleNoteCreation = async (e: React.FormEvent) => {
     e.preventDefault();
     toast.success("Note created!", {
       style: { background: "#334155", border: "none", color: "white" },
@@ -27,14 +28,16 @@ export function NewNoteCard() {
     setOpenDialog(false);
     console.log(noteContent);
   };
-  return (
-    <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
-      <Dialog.Trigger className="rounded-md flex flex-col outline-none transition p-5 bg-slate-700 text-sm text-left space-y-3 hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
-        <span className="font-medium text-slate-200">Add a new note</span>
-        <p className="leading-6 text-slate-400">Create a new note</p>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50">
+  const Modal = (isVisible: boolean) => (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          key="modal"
+          transition={{ ease: "easeOut", duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
           <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-full h-[70vh] overflow-hidden bg-slate-700 outline-none flex flex-col rounded-md">
             <Dialog.Close
               onClick={handleModalClose}
@@ -82,6 +85,19 @@ export function NewNoteCard() {
               </button>
             </form>
           </Dialog.Content>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+  return (
+    <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
+      <Dialog.Trigger className="rounded-md flex flex-col outline-none transition p-5 bg-slate-700 text-sm text-left space-y-3 hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
+        <span className="font-medium text-slate-200">Add a new note</span>
+        <p className="leading-6 text-slate-400">Create a new note</p>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 bg-black/50">
+          {Modal(openDialog)}
         </Dialog.Overlay>
       </Dialog.Portal>
     </Dialog.Root>
