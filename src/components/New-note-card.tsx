@@ -6,6 +6,7 @@ import { toast } from "sonner";
 interface NewNoteCardProps {
   onNoteCreation: (content: string) => void;
 }
+let recognition: SpeechRecognition | null = null;
 
 export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
   const [shouldShowTextArea, setShouldShowTextArea] = useState(true);
@@ -23,6 +24,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
   const handleModalClose = () => {
     shouldShowTextArea === false ? setShouldShowTextArea(true) : "";
     setNoteContent("");
+    isRecording ? setIsRecording(false) : "";
     setOpenDialog(false);
   };
   const handleNoteCreation = (e: React.FormEvent) => {
@@ -43,8 +45,42 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
     setNoteContent("");
     setOpenDialog(false);
   };
-  const handleRecording = () => {
-    isRecording ? setIsRecording(false) : setIsRecording(true);
+  const handleStartRecording = () => {
+    const isSpeechRecognitionAvailable =
+      "webkitSpeechRecognition" in window || "SpeechRecognition" in window;
+    if (!isSpeechRecognitionAvailable) {
+      toast.error("Speech recognition is not supported in your browser!", {
+        style: { background: "#334155", border: "none", color: "white" },
+        duration: 2000,
+      });
+      setIsRecording(false);
+      return;
+    }
+    const SpeechRecognitionApi =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognitionApi();
+
+    recognition.lang = "en-US";
+    recognition.interimResults = true;
+    recognition.continuous = true;
+    recognition.maxAlternatives = 1;
+
+    handleTextArea();
+    recognition.onresult = (e) => {
+      const transcription = Array.from(e.results).reduce((text, results) => {
+        return text.concat(results[0].transcript);
+      }, "");
+      setNoteContent(transcription);
+    };
+    recognition.onerror = (e) => {
+      console.log(e.error);
+    };
+    recognition.start();
+    setIsRecording(true);
+  };
+  const handleStopRecording = () => {
+    setIsRecording(false);
+    recognition ? recognition.stop() : "";
   };
   return (
     <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
@@ -54,7 +90,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50">
-          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-full h-[70vh] overflow-hidden bg-slate-700 outline-none flex flex-col rounded-md">
+          <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-4/5 h-[50vh] md:h-[70vh] overflow-hidden bg-slate-700 outline-none flex flex-col rounded-md md:w-full">
             <button
               onClick={handleModalClose}
               className="absolute right-0 top-0 bg-red-500 rounded-full m-2"
@@ -70,7 +106,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                   <p className="leading-6 text-slate-400">
                     Start by{" "}
                     <button
-                      onClick={handleRecording}
+                      onClick={handleStartRecording}
                       type="button"
                       className="text-md text-lime-400 hover:underline"
                     >
@@ -93,13 +129,14 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                     className="flex-1 bg-transparent text-slate-400 outline-none resize-none"
                     placeholder="Type your note here..."
                     onChange={handleContentChanged}
+                    value={noteContent}
                   ></textarea>
                 )}
               </div>
               {isRecording ? (
                 <button
                   type="button"
-                  onClick={handleRecording}
+                  onClick={handleStopRecording}
                   className="py-3 flex items-center justify-center gap-2 bg-slate-900 text-center text-sm outline-none transition-all duration-200 ease-in hover:text-base"
                 >
                   <Circle className="size-4 text-red-500 bg-red-500 rounded-full m-2 animate-pulse"></Circle>
