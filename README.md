@@ -17,6 +17,8 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - React
 - Tailwindcss
 - Vite
+- SpeechRecognitionAPI
+- Framer Motion
 
 ---
 
