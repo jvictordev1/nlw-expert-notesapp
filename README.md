@@ -11,7 +11,7 @@ Aplicativo de NoteTaking interativo e de fácil utilização que possibilita o r
   <a href="#used-technologies">EN-US</a>
 </p>
 
-
+PT-BR
 ## Tecnologias utilizadas
 
 
@@ -25,7 +25,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - SpeechRecognitionAPI
 - Framer Motion
 
----
+
 
 ## Instalando localmente
 
@@ -39,7 +39,7 @@ Siga o passo a passo descrito abaixo:
 ```
 
 ---
-
+EN-US
 ## Used technologies
 
 
