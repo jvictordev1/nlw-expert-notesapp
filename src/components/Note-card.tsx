@@ -32,13 +32,14 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: [1, 0], y: -120 }}
             transition={{ duration: 0.5 }}
-            className="size-full"
           >
             <Dialog.Trigger className="size-full rounded-md transition flex flex-col p-5 bg-slate-800 text-sm gap-3 relative overflow-hidden outline-none hover:ring-2 hover:ring-slate-800 focus-visible:ring-2 focus-visible:ring-lime-400">
               <span className="font-medium text-slate-300">
                 {formatDistanceToNow(note.date, { addSuffix: true })}
               </span>
-              <p className="leading-6 text-slate-400">{note.content}</p>
+              <p className="leading-6 text-justify break-words text-slate-400 h-full max-w-full">
+                {note.content}
+              </p>
               <div className="absolute bottom-0 right-0 left-0 h-1/2 bg-gradient-to-t from-black/40 to-black/0 pointer-events-none" />
             </Dialog.Trigger>
           </motion.div>
@@ -51,13 +52,17 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
             <Dialog.Close className="absolute right-0 top-0 bg-red-500 rounded-full m-2">
               <Circle className="text-red-500 size-5" />
             </Dialog.Close>
-            <div className="flex flex-col flex-1 p-5 gap-5">
+            <div className="flex flex-col flex-1 p-5 gap-5 h-1/2">
               <span className="font-medium text-slate-300">
                 {formatDistanceToNow(note.date, {
                   addSuffix: true,
                 })}
               </span>
-              <p className="leading-6 text-slate-400">{note.content}</p>
+              <div className="overflow-auto px-3">
+                <p className="leading-6 break-words text-justify text-slate-400">
+                  {note.content}
+                </p>
+              </div>
             </div>
             <button
               onClick={() => handleNoteDeleted(note.id)}

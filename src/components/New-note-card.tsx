@@ -126,7 +126,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                     <textarea
                       autoFocus
                       required
-                      className="flex-1 bg-transparent text-slate-400 outline-none resize-none"
+                      className="flex-1 bg-transparent text-slate-400 outline-none resize-none text-justify px-3"
                       placeholder="Type your note here..."
                       onChange={handleContentChanged}
                       value={noteContent}
