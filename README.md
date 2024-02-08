@@ -11,6 +11,10 @@ Aplicativo de NoteTaking interativo e de fácil utilização que possibilita o r
   <a href="#used-technologies">EN-US</a>
 </p>
 
+<p>
+  <img src="https://github.com/jvictordev1/nlw-expert-notesapp/blob/main/readme_app_image.png"/>
+</p>
+
 PT-BR
 ## Tecnologias utilizadas
 
