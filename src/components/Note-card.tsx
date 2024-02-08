@@ -13,7 +13,7 @@ interface NoteCardProps {
 export function NoteCard({ note, onDelete }: NoteCardProps) {
   return (
     <Dialog.Root>
-      <Dialog.Trigger className="rounded-md transition flex flex-col p-5 bg-slate-800 text-sm gap-3 relative overflow-hidden outline-none hover:ring-2 hover:ring-slate-800 focus-visible:ring-2 focus-visible:ring-lime-400">
+      <Dialog.Trigger className="size-full rounded-md transition flex flex-col p-5 bg-slate-800 text-sm gap-3 relative overflow-hidden outline-none hover:ring-2 hover:ring-slate-800 focus-visible:ring-2 focus-visible:ring-lime-400">
         <span className="font-medium text-slate-300">
           {formatDistanceToNow(note.date, { addSuffix: true })}
         </span>

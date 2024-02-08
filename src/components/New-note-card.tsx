@@ -84,7 +84,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
   };
   return (
     <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
-      <Dialog.Trigger className="rounded-md flex flex-col outline-none transition p-5 bg-slate-700 text-sm text-left space-y-3 hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
+      <Dialog.Trigger className="size-full rounded-md flex flex-col outline-none transition p-5 bg-slate-700 text-sm text-left space-y-3 hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
         <span className="font-medium text-slate-200">Add a new note</span>
         <p className="leading-6 text-slate-400">Create a new note</p>
       </Dialog.Trigger>
