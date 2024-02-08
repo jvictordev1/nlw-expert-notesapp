@@ -75,22 +75,19 @@ export function App() {
             <div className="h-px bg-slate-700" />
           </div>
         </form>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[250px]">
           <NewNoteCard
             onNoteCreation={(content: string) => onNoteCreated(content)}
           />
+
           {filteredNotes.map((note) => {
             return (
-              <motion.div
-                animate={{ y: [80, 0] }}
-                transition={{ type: "keyframes", duration: 0.5 }}
-              >
-                <NoteCard
-                  key={note.id}
-                  note={note}
-                  onDelete={(id: string) => onNoteDeleted(id)}
-                />
-              </motion.div>
+              <NoteCard
+                key={note.id}
+                note={note}
+                onDelete={(id: string) => onNoteDeleted(id)}
+              />
             );
           })}
         </div>
