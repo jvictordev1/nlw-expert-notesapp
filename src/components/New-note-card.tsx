@@ -3,9 +3,14 @@ import { Circle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export function NewNoteCard() {
+interface NewNoteCardProps {
+  onNoteCreation: (content: string) => void;
+}
+
+export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
   const [shouldShowTextArea, setShouldShowTextArea] = useState(true);
   const [noteContent, setNoteContent] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleTextArea = () => {
@@ -17,15 +22,29 @@ export function NewNoteCard() {
   };
   const handleModalClose = () => {
     shouldShowTextArea === false ? setShouldShowTextArea(true) : "";
+    setNoteContent("");
     setOpenDialog(false);
   };
   const handleNoteCreation = (e: React.FormEvent) => {
     e.preventDefault();
+    if (noteContent === "") {
+      toast.error("Note content cannot be empty!", {
+        style: { background: "#334155", border: "none", color: "white" },
+        duration: 2000,
+      });
+      return;
+    }
     toast.success("Note created!", {
       style: { background: "#334155", border: "none", color: "white" },
       duration: 2000,
     });
+    onNoteCreation(noteContent);
+    shouldShowTextArea === false ? setShouldShowTextArea(true) : "";
+    setNoteContent("");
     setOpenDialog(false);
+  };
+  const handleRecording = () => {
+    isRecording ? setIsRecording(false) : setIsRecording(true);
   };
   return (
     <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
@@ -42,10 +61,7 @@ export function NewNoteCard() {
             >
               <Circle className="text-red-500 size-5" />
             </button>
-            <form
-              onSubmit={handleNoteCreation}
-              className="flex flex-col flex-1"
-            >
+            <form className="flex flex-col flex-1">
               <div className="flex flex-col flex-1 p-5 gap-5">
                 <span className="font-medium text-slate-300">
                   Create a new note
@@ -53,12 +69,17 @@ export function NewNoteCard() {
                 {shouldShowTextArea ? (
                   <p className="leading-6 text-slate-400">
                     Start by{" "}
-                    <button className="text-md text-lime-400 hover:underline">
+                    <button
+                      onClick={handleRecording}
+                      type="button"
+                      className="text-md text-lime-400 hover:underline"
+                    >
                       recording
                     </button>{" "}
                     or{" "}
                     <button
                       onClick={handleTextArea}
+                      type="button"
                       className="text-md text-lime-400 hover:underline"
                     >
                       typing
@@ -68,18 +89,31 @@ export function NewNoteCard() {
                 ) : (
                   <textarea
                     autoFocus
+                    required
                     className="flex-1 bg-transparent text-slate-400 outline-none resize-none"
                     placeholder="Type your note here..."
                     onChange={handleContentChanged}
                   ></textarea>
                 )}
               </div>
-              <button
-                type="submit"
-                className="py-3 bg-lime-500 text-center text-sm outline-none hover:bg-lime-600 transition-all duration-200 ease-in hover:text-base"
-              >
-                Save this note
-              </button>
+              {isRecording ? (
+                <button
+                  type="button"
+                  onClick={handleRecording}
+                  className="py-3 flex items-center justify-center gap-2 bg-slate-900 text-center text-sm outline-none transition-all duration-200 ease-in hover:text-base"
+                >
+                  <Circle className="size-4 text-red-500 bg-red-500 rounded-full m-2 animate-pulse"></Circle>
+                  Click here to stop Recording
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleNoteCreation}
+                  className="py-3 bg-lime-500 text-center text-sm outline-none hover:bg-lime-600 transition-all duration-200 ease-in hover:text-base"
+                >
+                  Save this note
+                </button>
+              )}
             </form>
           </Dialog.Content>
         </Dialog.Overlay>
