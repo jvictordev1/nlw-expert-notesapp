@@ -6,9 +6,13 @@
 Aplicativo de NoteTaking interativo e de fácil utilização que possibilita o registro de informações através de texto ou reconhecimento de voz desenvolvido durante aulas da trilha react no primeiro NLW Expert da Rocketseat de 2024. <br/>
 </p>
 
+[Clique aqui para ir para a Minha Seção](#dddeee)
 ---
 
+
+
 ## Tecnologias utilizadas
+
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
@@ -23,6 +27,32 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 ---
 
 ## Instalando localmente
+
+Siga o passo a passo descrito abaixo:
+
+```bash
+  git clone https://github.com/jvictordev1/nlw-expert-notesapp.git
+  cd my-project
+  npm install
+  npm run dev
+```
+
+## Tecnologias utilizadas
+
+
+Esse projeto foi desenvolvido com as seguintes tecnologias:
+
+- HTML e CSS
+- Typescript
+- React
+- Tailwindcss
+- Vite
+- SpeechRecognitionAPI
+- Framer Motion
+
+---
+
+## dddeee
 
 Siga o passo a passo descrito abaixo:
 
