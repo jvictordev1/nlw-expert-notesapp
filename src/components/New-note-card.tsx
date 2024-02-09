@@ -1,6 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import { AnimatePresence, motion } from "framer-motion";
 import { Circle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface NewNoteCardProps {
@@ -13,6 +14,11 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
   const [noteContent, setNoteContent] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    console.log(isModalOpen);
+  }, [isModalOpen]);
 
   const handleTextArea = () => {
     setShouldShowTextArea(false);
@@ -25,7 +31,10 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
     shouldShowTextArea === false ? setShouldShowTextArea(true) : "";
     setNoteContent("");
     isRecording ? setIsRecording(false) : "";
-    setOpenDialog(false);
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setOpenDialog(false);
+    }, 400);
   };
   const handleNoteCreation = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +52,10 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
     onNoteCreation(noteContent);
     shouldShowTextArea === false ? setShouldShowTextArea(true) : "";
     setNoteContent("");
-    setOpenDialog(false);
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setOpenDialog(false);
+    }, 400);
   };
   const handleStartRecording = () => {
     const isSpeechRecognitionAvailable =
@@ -82,79 +94,94 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
     setIsRecording(false);
     recognition ? recognition.stop() : "";
   };
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+    setIsModalOpen(true);
+  };
   return (
-    <Dialog.Root open={openDialog} onOpenChange={setOpenDialog}>
+    <Dialog.Root open={openDialog} onOpenChange={handleDialogOpen}>
       <Dialog.Trigger className="size-full rounded-md flex flex-col outline-none transition p-5 bg-slate-700 text-sm text-left space-y-3 hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
         <span className="font-medium text-slate-200">Add a new note</span>
         <p className="leading-6 text-slate-400">Create a new note</p>
       </Dialog.Trigger>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-black/50">
-            <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-4/5 h-[50vh] md:h-[70vh] overflow-hidden bg-slate-700 outline-none flex flex-col rounded-md md:w-full">
-              <button
-                onClick={handleModalClose}
-                className="absolute right-0 top-0 bg-red-500 rounded-full m-2"
-              >
-                <Circle className="text-red-500 size-5" />
-              </button>
-              <form className="flex flex-col flex-1">
-                <div className="flex flex-col flex-1 p-5 gap-5">
-                  <span className="font-medium text-slate-300">
-                    Create a new note
-                  </span>
-                  {shouldShowTextArea ? (
-                    <p className="leading-6 text-slate-400">
-                      Start by{" "}
-                      <button
-                        onClick={handleStartRecording}
-                        type="button"
-                        className="text-md text-lime-400 hover:underline"
-                      >
-                        recording
-                      </button>{" "}
-                      or{" "}
-                      <button
-                        onClick={handleTextArea}
-                        type="button"
-                        className="text-md text-lime-400 hover:underline"
-                      >
-                        typing
-                      </button>{" "}
-                      your note.
-                    </p>
-                  ) : (
-                    <textarea
-                      autoFocus
-                      required
-                      className="flex-1 bg-transparent text-slate-400 outline-none resize-none text-justify px-3"
-                      placeholder="Type your note here..."
-                      onChange={handleContentChanged}
-                      value={noteContent}
-                    ></textarea>
-                  )}
-                </div>
-                {isRecording ? (
+      <Dialog.Portal>
+        <AnimatePresence>
+          {isModalOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-black/50">
+                <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-4/5 h-[50vh] md:h-[70vh] overflow-hidden bg-slate-700 outline-none flex flex-col rounded-md md:w-full">
                   <button
-                    type="button"
-                    onClick={handleStopRecording}
-                    className="py-3 flex items-center justify-center gap-2 bg-slate-900 text-center text-sm outline-none transition-all duration-200 ease-in hover:text-base"
+                    onClick={handleModalClose}
+                    className="absolute right-0 top-0 bg-red-500 rounded-full m-2"
                   >
-                    <Circle className="size-4 text-red-500 bg-red-500 rounded-full m-2 animate-pulse"></Circle>
-                    Click here to stop Recording
+                    <Circle className="text-red-500 size-5" />
                   </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handleNoteCreation}
-                    className="py-3 bg-lime-500 text-center text-sm outline-none hover:bg-lime-600 transition-all duration-200 ease-in hover:text-base"
-                  >
-                    Save this note
-                  </button>
-                )}
-              </form>
-            </Dialog.Content>
-          </Dialog.Overlay>
-        </Dialog.Portal>
+                  <form className="flex flex-col flex-1">
+                    <div className="flex flex-col flex-1 p-5 gap-5">
+                      <span className="font-medium text-slate-300">
+                        Create a new note
+                      </span>
+                      {shouldShowTextArea ? (
+                        <p className="leading-6 text-slate-400">
+                          Start by{" "}
+                          <button
+                            onClick={handleStartRecording}
+                            type="button"
+                            className="text-md text-lime-400 hover:underline"
+                          >
+                            recording
+                          </button>{" "}
+                          or{" "}
+                          <button
+                            onClick={handleTextArea}
+                            type="button"
+                            className="text-md text-lime-400 hover:underline"
+                          >
+                            typing
+                          </button>{" "}
+                          your note.
+                        </p>
+                      ) : (
+                        <textarea
+                          autoFocus
+                          required
+                          className="flex-1 bg-transparent text-slate-400 outline-none resize-none text-justify px-3"
+                          placeholder="Type your note here..."
+                          onChange={handleContentChanged}
+                          value={noteContent}
+                        ></textarea>
+                      )}
+                    </div>
+                    {isRecording ? (
+                      <button
+                        type="button"
+                        onClick={handleStopRecording}
+                        className="py-3 flex items-center justify-center gap-2 bg-slate-900 text-center text-sm outline-none transition-all duration-200 ease-in hover:text-base"
+                      >
+                        <Circle className="size-4 text-red-500 bg-red-500 rounded-full m-2 animate-pulse"></Circle>
+                        Click here to stop Recording
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleNoteCreation}
+                        className="py-3 bg-lime-500 text-center text-sm outline-none hover:bg-lime-600 transition-all duration-200 ease-in hover:text-base"
+                      >
+                        Save this note
+                      </button>
+                    )}
+                  </form>
+                </Dialog.Content>
+              </Dialog.Overlay>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Dialog.Portal>
     </Dialog.Root>
   );
 }
