@@ -21,7 +21,6 @@ PT-BR
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
-- HTML e CSS
 - Typescript
 - React
 - Tailwindcss
@@ -49,7 +48,6 @@ EN-US
 
 This project was developed using the above technologies:
 
-- HTML and CSS
 - Typescript
 - React
 - Tailwindcss
