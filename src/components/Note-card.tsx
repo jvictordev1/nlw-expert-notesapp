@@ -12,7 +12,7 @@ interface NoteCardProps {
   onDelete: (id: string) => void;
 }
 
-export function NoteCard({ note, onDelete }: NoteCardProps) {
+export function NoteCard ({ note, onDelete }: NoteCardProps) {
   const [isShowing, setIsShowing] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,7 +43,6 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
       <AnimatePresence>
         {isShowing && (
           <motion.div
-            key={note.id}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, scale: [1, 0], y: -120 }}

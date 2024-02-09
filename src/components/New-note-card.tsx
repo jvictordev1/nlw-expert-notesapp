@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import { Circle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface NewNoteCardProps {
@@ -15,10 +15,6 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    console.log(isModalOpen);
-  }, [isModalOpen]);
 
   const handleTextArea = () => {
     setShouldShowTextArea(false);
@@ -121,7 +117,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                   >
                     <Circle className="text-red-500 size-5" />
                   </button>
-                  <form className="flex flex-col flex-1">
+                  <form id="newNoteForm" className="flex flex-col flex-1">
                     <div className="flex flex-col flex-1 p-5 gap-5">
                       <span className="font-medium text-slate-300">
                         Create a new note
@@ -130,6 +126,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                         <p className="leading-6 text-slate-400">
                           Start by{" "}
                           <button
+                            name="startRecordingButton"
                             onClick={handleStartRecording}
                             type="button"
                             className="text-md text-lime-400 hover:underline"
@@ -138,6 +135,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                           </button>{" "}
                           or{" "}
                           <button
+                            name="startTypingButton"
                             onClick={handleTextArea}
                             type="button"
                             className="text-md text-lime-400 hover:underline"
@@ -150,6 +148,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                         <textarea
                           autoFocus
                           required
+                          name="noteContent"
                           className="flex-1 bg-transparent text-slate-400 outline-none resize-none text-justify px-3"
                           placeholder="Type your note here..."
                           onChange={handleContentChanged}
@@ -160,6 +159,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                     {isRecording ? (
                       <button
                         type="button"
+                        name="stopRecordingButton"
                         onClick={handleStopRecording}
                         className="py-3 flex items-center justify-center gap-2 bg-slate-900 text-center text-sm outline-none transition-all duration-200 ease-in hover:text-base"
                       >
@@ -169,6 +169,7 @@ export function NewNoteCard({ onNoteCreation }: NewNoteCardProps) {
                     ) : (
                       <button
                         type="button"
+                        name="saveNoteButton"
                         onClick={handleNoteCreation}
                         className="py-3 bg-lime-500 text-center text-sm outline-none hover:bg-lime-600 transition-all duration-200 ease-in hover:text-base"
                       >
